@@ -1,0 +1,73 @@
+CONSTANTES NUMÉRICAS:
+
+Constantes octales:
+ - Valor octal 65, es 53 en decimal
+ - Valor octal 0, es 0 en decimal
+ - Valor octal 17, es 15 en decimal
+
+Constantes hexadecimales:
+ - Valor hexadecimal 53b, es 1339 en decimal
+ - Valor hexadecimal aa3, es 2723 en decimal
+
+Constantes decimales:
+ - 15 
+ - 789 
+ - 566 
+ - 65 
+Suma de todos los valores decimales: 1435
+
+Constantes reales:
+ - Número real 42.000000, parte entera 42.000000 y mantisa 0.000000
+ - Número real 0.073000, parte entera 0.000000 y mantisa 0.073000
+ - Número real 34.980000, parte entera 34.000000 y mantisa 0.980000
+ - Número real 23.056000, parte entera 23.000000 y mantisa 0.056000
+
+CONSTANTES CARACTER POR ORDEN DE APARICIÓN:
+1) H 
+2) O 
+3) l 
+4) a 
+
+ LITERALES CADENA:
+literal: Chau  longitud: 4
+literal: Hola que tal  longitud: 12
+literal: Buenas tardes  longitud: 13
+
+PALABRAS RESERVADAS:
+Palabra reservada: main
+Palabra reservada: int
+Palabra reservada: float
+Palabra reservada: double
+Palabra reservada: double
+
+OPERADORES Y SIGNOS DE PUNTUACION:
+Operador:/ Cantidad de veces que aparece:1 
+Operador:* Cantidad de veces que aparece:2 
+
+COMENTARIOS:
+El comentario : // Comentario de una linea
+El comentario : // Otro coment
+El comentario : // 
+El comentario : /* Comentario de varias lineas 
+ hola 
+ hola*/
+El comentario : /*
+ buenas 
+*/
+
+NO RECONOCIDOS:
+Cadena no reconocida: 344##44 
+Linea donde se encuentra: 125 
+
+Cadena no reconocida: --// 
+Linea donde se encuentra: 90 
+
+Cadena no reconocida: [c]=' 
+Linea donde se encuentra: 83 
+
+Cadena no reconocida: buenas tardess 
+Linea donde se encuentra: 123 
+
+Cantidad de buenDia encontrados: 2
+Cantidad de chau encontrados: 1
+Cantidad de hola encontrados: 1

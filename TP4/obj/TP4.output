@@ -1,0 +1,2693 @@
+Terminals unused in grammar
+
+   OTROS
+   '^'
+
+
+Rules useless in parser due to conflicts
+
+   83 lista_de_declaraciones: declaracion
+   84                       | lista_de_declaraciones declaracion
+
+
+Estado 39 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 71 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 73 conflictos: 23 reducción(ones)/reducción(ones)
+Estado 93 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 100 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 110 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 113 conflictos: 23 reducción(ones)/reducción(ones)
+Estado 126 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 137 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 144 conflictos: 2 desplazamiento(s)/reducción(ones)
+Estado 145 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 147 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 156 conflictos: 1 desplazamiento(s)/reducción(ones)
+Estado 160 conflictos: 1 desplazamiento(s)/reducción(ones)
+
+
+Gramática
+
+    0 $accept: input $end
+
+    1 input: /* vacío */
+    2      | input line
+
+    3 line: ERROR_LEXICO
+    4     | sentencia
+    5     | error
+
+    6 expresion: expAsignacion
+    7          | expresion ',' expAsignacion
+
+    8 expAsignacion: expCondicional
+    9              | ID opAsignacion expOr
+
+   10 expCondicional: expOr
+   11               | expOr '?' expresion ':' expCondicional
+
+   12 opAsignacion: '='
+   13             | ASIGNACION_INCREMENTO
+
+   14 expOr: expAnd
+   15      | expOr OR expAnd
+
+   16 expAnd: expIgualdad
+   17       | expAnd AND expIgualdad
+
+   18 expIgualdad: expRelacional
+   19            | expIgualdad IGUALDAD expRelacional
+   20            | expIgualdad DISTINTO expRelacional
+
+   21 expRelacional: expAditiva
+   22              | expRelacional opRelacional expAditiva
+
+   23 opRelacional: '>'
+   24             | '<'
+   25             | MAYOR_IGUAL
+   26             | MENOR_IGUAL
+
+   27 expAditiva: expMultiplicativa
+   28           | expAditiva '+' expMultiplicativa
+   29           | expAditiva '-' expMultiplicativa
+
+   30 expMultiplicativa: expUnaria
+   31                  | expMultiplicativa '/' expUnaria
+   32                  | expMultiplicativa '*' expUnaria
+   33                  | expMultiplicativa '%' expUnaria
+
+   34 expUnaria: expPrimaria
+   35          | INCREMENTO expUnaria
+   36          | DECREMENTO expUnaria
+
+   37 expPrimaria: ID
+   38            | NUM_ENTERO
+   39            | NUM_REAL
+   40            | LIT_CADENA
+   41            | CHAR
+   42            | '(' expresion ')'
+
+   43 sentencia: declaracion
+   44          | sentencia_expresion
+   45          | sentencia_compuesta
+   46          | sentencia_seleccion
+   47          | sentencia_iteracion
+   48          | sentencia_etiquetada
+   49          | sentencia_de_salto
+   50          | sentencia ';' sentencia
+
+   51 sentencia_expresion: expresion ';'
+   52                    | ';'
+
+   53 sentencia_compuesta: '{' '}'
+   54                    | '{' lista_de_declaraciones '}'
+   55                    | '{' lista_de_sentencias '}'
+   56                    | '{' lista_de_declaraciones lista_de_sentencias '}'
+
+   57 sentencia_seleccion: IF '(' expCondicional ')' sentencia
+   58                    | IF '(' expCondicional ')' sentencia ELSE sentencia
+   59                    | SWITCH '(' expCondicional ')' sentencia
+
+   60 sentencia_iteracion: WHILE '(' expCondicional ')' sentencia
+   61                    | DO sentencia WHILE '(' expCondicional ')' ';'
+   62                    | FOR '(' declaracion ';' expCondicional ';' expUnaria ')' sentencia
+
+   63 sentencia_etiquetada: CASE expCondicional ':' sentencia
+   64                     | DEFAULT ':' sentencia
+   65                     | ID ':' sentencia
+
+   66 sentencia_de_salto: CONTINUE ';'
+   67                   | BREAK ';'
+   68                   | RETURN expresion ';'
+   69                   | GOTO ID ';'
+
+   70 lista_de_sentencias: sentencia
+   71                    | lista_de_sentencias sentencia
+
+   72 declaracion: TIPO_DATO listaIdentificadores ';'
+   73            | TIPO_DATO ID '(' listaParametros ')' ';'
+   74            | TIPO_DATO ID '(' listaParametros ')' sentencia_compuesta
+
+   75 listaIdentificadores: identificador
+   76                     | identificador ',' listaIdentificadores
+
+   77 identificador: ID
+   78              | ID '=' expAditiva
+
+   79 listaParametros: parametro
+   80                | parametro ',' listaParametros
+
+   81 parametro: /* vacío */
+   82          | TIPO_DATO ID
+
+   83 lista_de_declaraciones: declaracion
+   84                       | lista_de_declaraciones declaracion
+
+
+Terminales con las reglas donde aparecen
+
+$end (0) 0
+'%' (37) 33
+'(' (40) 42 57 58 59 60 61 62 73 74
+')' (41) 42 57 58 59 60 61 62 73 74
+'*' (42) 32
+'+' (43) 28
+',' (44) 7 76 80
+'-' (45) 29
+'/' (47) 31
+':' (58) 11 63 64 65
+';' (59) 50 51 52 61 62 66 67 68 69 72 73
+'<' (60) 24
+'=' (61) 12 78
+'>' (62) 23
+'?' (63) 11
+'^' (94)
+'{' (123) 53 54 55 56
+'}' (125) 53 54 55 56
+error (256) 5
+NUM_ENTERO (258) 38
+NUM_REAL (259) 39
+CHAR (260) 41
+ERROR_LEXICO (261) 3
+OTROS (262)
+ID (263) 9 37 65 69 73 74 77 78 82
+LIT_CADENA (264) 40
+TIPO_DATO (265) 72 73 74 82
+IF (266) 57 58
+DEFAULT (267) 64
+ELSE (268) 58
+WHILE (269) 60 61
+DO (270) 61
+SWITCH (271) 59
+BREAK (272) 67
+CASE (273) 63
+FOR (274) 62
+GOTO (275) 69
+CONTINUE (276) 66
+RETURN (277) 68
+IGUALDAD (278) 19
+ASIGNACION_INCREMENTO (279) 13
+AND (280) 17
+OR (281) 15
+DISTINTO (282) 20
+MAYOR_IGUAL (283) 25
+MENOR_IGUAL (284) 26
+INCREMENTO (285) 35
+DECREMENTO (286) 36
+
+
+No terminales con las reglas donde aparecen
+
+$accept (49)
+    en la izquierda: 0
+input (50)
+    en la izquierda: 1 2, en la derecha: 0 2
+line (51)
+    en la izquierda: 3 4 5, en la derecha: 2
+expresion (52)
+    en la izquierda: 6 7, en la derecha: 7 11 42 51 68
+expAsignacion (53)
+    en la izquierda: 8 9, en la derecha: 6 7
+expCondicional (54)
+    en la izquierda: 10 11, en la derecha: 8 11 57 58 59 60 61 62 63
+opAsignacion (55)
+    en la izquierda: 12 13, en la derecha: 9
+expOr (56)
+    en la izquierda: 14 15, en la derecha: 9 10 11 15
+expAnd (57)
+    en la izquierda: 16 17, en la derecha: 14 15 17
+expIgualdad (58)
+    en la izquierda: 18 19 20, en la derecha: 16 17 19 20
+expRelacional (59)
+    en la izquierda: 21 22, en la derecha: 18 19 20 22
+opRelacional (60)
+    en la izquierda: 23 24 25 26, en la derecha: 22
+expAditiva (61)
+    en la izquierda: 27 28 29, en la derecha: 21 22 28 29 78
+expMultiplicativa (62)
+    en la izquierda: 30 31 32 33, en la derecha: 27 28 29 31 32 33
+expUnaria (63)
+    en la izquierda: 34 35 36, en la derecha: 30 31 32 33 35 36 62
+expPrimaria (64)
+    en la izquierda: 37 38 39 40 41 42, en la derecha: 34
+sentencia (65)
+    en la izquierda: 43 44 45 46 47 48 49 50, en la derecha: 4 50 57
+    58 59 60 61 62 63 64 65 70 71
+sentencia_expresion (66)
+    en la izquierda: 51 52, en la derecha: 44
+sentencia_compuesta (67)
+    en la izquierda: 53 54 55 56, en la derecha: 45 74
+sentencia_seleccion (68)
+    en la izquierda: 57 58 59, en la derecha: 46
+sentencia_iteracion (69)
+    en la izquierda: 60 61 62, en la derecha: 47
+sentencia_etiquetada (70)
+    en la izquierda: 63 64 65, en la derecha: 48
+sentencia_de_salto (71)
+    en la izquierda: 66 67 68 69, en la derecha: 49
+lista_de_sentencias (72)
+    en la izquierda: 70 71, en la derecha: 55 56 71
+declaracion (73)
+    en la izquierda: 72 73 74, en la derecha: 43 62 83 84
+listaIdentificadores (74)
+    en la izquierda: 75 76, en la derecha: 72 76
+identificador (75)
+    en la izquierda: 77 78, en la derecha: 75 76
+listaParametros (76)
+    en la izquierda: 79 80, en la derecha: 73 74 80
+parametro (77)
+    en la izquierda: 81 82, en la derecha: 79 80
+lista_de_declaraciones (78)
+    en la izquierda: 83 84, en la derecha: 54 56 84
+
+
+estado 0
+
+    0 $accept: . input $end
+
+    $default  reduce usando la regla 1 (input)
+
+    input  ir al estado 1
+
+
+estado 1
+
+    0 $accept: input . $end
+    2 input: input . line
+
+    $end          desplazar e ir al estado 2
+    error         desplazar e ir al estado 3
+    NUM_ENTERO    desplazar e ir al estado 4
+    NUM_REAL      desplazar e ir al estado 5
+    CHAR          desplazar e ir al estado 6
+    ERROR_LEXICO  desplazar e ir al estado 7
+    ID            desplazar e ir al estado 8
+    LIT_CADENA    desplazar e ir al estado 9
+    TIPO_DATO     desplazar e ir al estado 10
+    IF            desplazar e ir al estado 11
+    DEFAULT       desplazar e ir al estado 12
+    WHILE         desplazar e ir al estado 13
+    DO            desplazar e ir al estado 14
+    SWITCH        desplazar e ir al estado 15
+    BREAK         desplazar e ir al estado 16
+    CASE          desplazar e ir al estado 17
+    FOR           desplazar e ir al estado 18
+    GOTO          desplazar e ir al estado 19
+    CONTINUE      desplazar e ir al estado 20
+    RETURN        desplazar e ir al estado 21
+    INCREMENTO    desplazar e ir al estado 22
+    DECREMENTO    desplazar e ir al estado 23
+    '('           desplazar e ir al estado 24
+    ';'           desplazar e ir al estado 25
+    '{'           desplazar e ir al estado 26
+
+    line                  ir al estado 27
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 39
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 2
+
+    0 $accept: input $end .
+
+    $default  aceptar
+
+
+estado 3
+
+    5 line: error .
+
+    $default  reduce usando la regla 5 (line)
+
+
+estado 4
+
+   38 expPrimaria: NUM_ENTERO .
+
+    $default  reduce usando la regla 38 (expPrimaria)
+
+
+estado 5
+
+   39 expPrimaria: NUM_REAL .
+
+    $default  reduce usando la regla 39 (expPrimaria)
+
+
+estado 6
+
+   41 expPrimaria: CHAR .
+
+    $default  reduce usando la regla 41 (expPrimaria)
+
+
+estado 7
+
+    3 line: ERROR_LEXICO .
+
+    $default  reduce usando la regla 3 (line)
+
+
+estado 8
+
+    9 expAsignacion: ID . opAsignacion expOr
+   37 expPrimaria: ID .
+   65 sentencia_etiquetada: ID . ':' sentencia
+
+    ASIGNACION_INCREMENTO  desplazar e ir al estado 47
+    ':'                    desplazar e ir al estado 48
+    '='                    desplazar e ir al estado 49
+
+    $default  reduce usando la regla 37 (expPrimaria)
+
+    opAsignacion  ir al estado 50
+
+
+estado 9
+
+   40 expPrimaria: LIT_CADENA .
+
+    $default  reduce usando la regla 40 (expPrimaria)
+
+
+estado 10
+
+   72 declaracion: TIPO_DATO . listaIdentificadores ';'
+   73            | TIPO_DATO . ID '(' listaParametros ')' ';'
+   74            | TIPO_DATO . ID '(' listaParametros ')' sentencia_compuesta
+
+    ID  desplazar e ir al estado 51
+
+    listaIdentificadores  ir al estado 52
+    identificador         ir al estado 53
+
+
+estado 11
+
+   57 sentencia_seleccion: IF . '(' expCondicional ')' sentencia
+   58                    | IF . '(' expCondicional ')' sentencia ELSE sentencia
+
+    '('  desplazar e ir al estado 54
+
+
+estado 12
+
+   64 sentencia_etiquetada: DEFAULT . ':' sentencia
+
+    ':'  desplazar e ir al estado 55
+
+
+estado 13
+
+   60 sentencia_iteracion: WHILE . '(' expCondicional ')' sentencia
+
+    '('  desplazar e ir al estado 56
+
+
+estado 14
+
+   61 sentencia_iteracion: DO . sentencia WHILE '(' expCondicional ')' ';'
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 57
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 15
+
+   59 sentencia_seleccion: SWITCH . '(' expCondicional ')' sentencia
+
+    '('  desplazar e ir al estado 58
+
+
+estado 16
+
+   67 sentencia_de_salto: BREAK . ';'
+
+    ';'  desplazar e ir al estado 59
+
+
+estado 17
+
+   63 sentencia_etiquetada: CASE . expCondicional ':' sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 61
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 18
+
+   62 sentencia_iteracion: FOR . '(' declaracion ';' expCondicional ';' expUnaria ')' sentencia
+
+    '('  desplazar e ir al estado 62
+
+
+estado 19
+
+   69 sentencia_de_salto: GOTO . ID ';'
+
+    ID  desplazar e ir al estado 63
+
+
+estado 20
+
+   66 sentencia_de_salto: CONTINUE . ';'
+
+    ';'  desplazar e ir al estado 64
+
+
+estado 21
+
+   68 sentencia_de_salto: RETURN . expresion ';'
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 65
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expresion          ir al estado 66
+    expAsignacion      ir al estado 29
+    expCondicional     ir al estado 30
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 22
+
+   35 expUnaria: INCREMENTO . expUnaria
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 67
+    expPrimaria  ir al estado 38
+
+
+estado 23
+
+   36 expUnaria: DECREMENTO . expUnaria
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 68
+    expPrimaria  ir al estado 38
+
+
+estado 24
+
+   42 expPrimaria: '(' . expresion ')'
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 65
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expresion          ir al estado 69
+    expAsignacion      ir al estado 29
+    expCondicional     ir al estado 30
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 25
+
+   52 sentencia_expresion: ';' .
+
+    $default  reduce usando la regla 52 (sentencia_expresion)
+
+
+estado 26
+
+   53 sentencia_compuesta: '{' . '}'
+   54                    | '{' . lista_de_declaraciones '}'
+   55                    | '{' . lista_de_sentencias '}'
+   56                    | '{' . lista_de_declaraciones lista_de_sentencias '}'
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+    '}'         desplazar e ir al estado 70
+
+    expresion               ir al estado 28
+    expAsignacion           ir al estado 29
+    expCondicional          ir al estado 30
+    expOr                   ir al estado 31
+    expAnd                  ir al estado 32
+    expIgualdad             ir al estado 33
+    expRelacional           ir al estado 34
+    expAditiva              ir al estado 35
+    expMultiplicativa       ir al estado 36
+    expUnaria               ir al estado 37
+    expPrimaria             ir al estado 38
+    sentencia               ir al estado 71
+    sentencia_expresion     ir al estado 40
+    sentencia_compuesta     ir al estado 41
+    sentencia_seleccion     ir al estado 42
+    sentencia_iteracion     ir al estado 43
+    sentencia_etiquetada    ir al estado 44
+    sentencia_de_salto      ir al estado 45
+    lista_de_sentencias     ir al estado 72
+    declaracion             ir al estado 73
+    lista_de_declaraciones  ir al estado 74
+
+
+estado 27
+
+    2 input: input line .
+
+    $default  reduce usando la regla 2 (input)
+
+
+estado 28
+
+    7 expresion: expresion . ',' expAsignacion
+   51 sentencia_expresion: expresion . ';'
+
+    ','  desplazar e ir al estado 75
+    ';'  desplazar e ir al estado 76
+
+
+estado 29
+
+    6 expresion: expAsignacion .
+
+    $default  reduce usando la regla 6 (expresion)
+
+
+estado 30
+
+    8 expAsignacion: expCondicional .
+
+    $default  reduce usando la regla 8 (expAsignacion)
+
+
+estado 31
+
+   10 expCondicional: expOr .
+   11               | expOr . '?' expresion ':' expCondicional
+   15 expOr: expOr . OR expAnd
+
+    OR   desplazar e ir al estado 77
+    '?'  desplazar e ir al estado 78
+
+    $default  reduce usando la regla 10 (expCondicional)
+
+
+estado 32
+
+   14 expOr: expAnd .
+   17 expAnd: expAnd . AND expIgualdad
+
+    AND  desplazar e ir al estado 79
+
+    $default  reduce usando la regla 14 (expOr)
+
+
+estado 33
+
+   16 expAnd: expIgualdad .
+   19 expIgualdad: expIgualdad . IGUALDAD expRelacional
+   20            | expIgualdad . DISTINTO expRelacional
+
+    IGUALDAD  desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+
+    $default  reduce usando la regla 16 (expAnd)
+
+
+estado 34
+
+   18 expIgualdad: expRelacional .
+   22 expRelacional: expRelacional . opRelacional expAditiva
+
+    MAYOR_IGUAL  desplazar e ir al estado 82
+    MENOR_IGUAL  desplazar e ir al estado 83
+    '>'          desplazar e ir al estado 84
+    '<'          desplazar e ir al estado 85
+
+    $default  reduce usando la regla 18 (expIgualdad)
+
+    opRelacional  ir al estado 86
+
+
+estado 35
+
+   21 expRelacional: expAditiva .
+   28 expAditiva: expAditiva . '+' expMultiplicativa
+   29           | expAditiva . '-' expMultiplicativa
+
+    '+'  desplazar e ir al estado 87
+    '-'  desplazar e ir al estado 88
+
+    $default  reduce usando la regla 21 (expRelacional)
+
+
+estado 36
+
+   27 expAditiva: expMultiplicativa .
+   31 expMultiplicativa: expMultiplicativa . '/' expUnaria
+   32                  | expMultiplicativa . '*' expUnaria
+   33                  | expMultiplicativa . '%' expUnaria
+
+    '*'  desplazar e ir al estado 89
+    '/'  desplazar e ir al estado 90
+    '%'  desplazar e ir al estado 91
+
+    $default  reduce usando la regla 27 (expAditiva)
+
+
+estado 37
+
+   30 expMultiplicativa: expUnaria .
+
+    $default  reduce usando la regla 30 (expMultiplicativa)
+
+
+estado 38
+
+   34 expUnaria: expPrimaria .
+
+    $default  reduce usando la regla 34 (expUnaria)
+
+
+estado 39
+
+    4 line: sentencia .
+   50 sentencia: sentencia . ';' sentencia
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 4 (line)]
+    $default  reduce usando la regla 4 (line)
+
+
+estado 40
+
+   44 sentencia: sentencia_expresion .
+
+    $default  reduce usando la regla 44 (sentencia)
+
+
+estado 41
+
+   45 sentencia: sentencia_compuesta .
+
+    $default  reduce usando la regla 45 (sentencia)
+
+
+estado 42
+
+   46 sentencia: sentencia_seleccion .
+
+    $default  reduce usando la regla 46 (sentencia)
+
+
+estado 43
+
+   47 sentencia: sentencia_iteracion .
+
+    $default  reduce usando la regla 47 (sentencia)
+
+
+estado 44
+
+   48 sentencia: sentencia_etiquetada .
+
+    $default  reduce usando la regla 48 (sentencia)
+
+
+estado 45
+
+   49 sentencia: sentencia_de_salto .
+
+    $default  reduce usando la regla 49 (sentencia)
+
+
+estado 46
+
+   43 sentencia: declaracion .
+
+    $default  reduce usando la regla 43 (sentencia)
+
+
+estado 47
+
+   13 opAsignacion: ASIGNACION_INCREMENTO .
+
+    $default  reduce usando la regla 13 (opAsignacion)
+
+
+estado 48
+
+   65 sentencia_etiquetada: ID ':' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 93
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 49
+
+   12 opAsignacion: '=' .
+
+    $default  reduce usando la regla 12 (opAsignacion)
+
+
+estado 50
+
+    9 expAsignacion: ID opAsignacion . expOr
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expOr              ir al estado 94
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 51
+
+   73 declaracion: TIPO_DATO ID . '(' listaParametros ')' ';'
+   74            | TIPO_DATO ID . '(' listaParametros ')' sentencia_compuesta
+   77 identificador: ID .
+   78              | ID . '=' expAditiva
+
+    '('  desplazar e ir al estado 95
+    '='  desplazar e ir al estado 96
+
+    $default  reduce usando la regla 77 (identificador)
+
+
+estado 52
+
+   72 declaracion: TIPO_DATO listaIdentificadores . ';'
+
+    ';'  desplazar e ir al estado 97
+
+
+estado 53
+
+   75 listaIdentificadores: identificador .
+   76                     | identificador . ',' listaIdentificadores
+
+    ','  desplazar e ir al estado 98
+
+    $default  reduce usando la regla 75 (listaIdentificadores)
+
+
+estado 54
+
+   57 sentencia_seleccion: IF '(' . expCondicional ')' sentencia
+   58                    | IF '(' . expCondicional ')' sentencia ELSE sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 99
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 55
+
+   64 sentencia_etiquetada: DEFAULT ':' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 100
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 56
+
+   60 sentencia_iteracion: WHILE '(' . expCondicional ')' sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 101
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 57
+
+   50 sentencia: sentencia . ';' sentencia
+   61 sentencia_iteracion: DO sentencia . WHILE '(' expCondicional ')' ';'
+
+    WHILE  desplazar e ir al estado 102
+    ';'    desplazar e ir al estado 92
+
+
+estado 58
+
+   59 sentencia_seleccion: SWITCH '(' . expCondicional ')' sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 103
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 59
+
+   67 sentencia_de_salto: BREAK ';' .
+
+    $default  reduce usando la regla 67 (sentencia_de_salto)
+
+
+estado 60
+
+   37 expPrimaria: ID .
+
+    $default  reduce usando la regla 37 (expPrimaria)
+
+
+estado 61
+
+   63 sentencia_etiquetada: CASE expCondicional . ':' sentencia
+
+    ':'  desplazar e ir al estado 104
+
+
+estado 62
+
+   62 sentencia_iteracion: FOR '(' . declaracion ';' expCondicional ';' expUnaria ')' sentencia
+
+    TIPO_DATO  desplazar e ir al estado 10
+
+    declaracion  ir al estado 105
+
+
+estado 63
+
+   69 sentencia_de_salto: GOTO ID . ';'
+
+    ';'  desplazar e ir al estado 106
+
+
+estado 64
+
+   66 sentencia_de_salto: CONTINUE ';' .
+
+    $default  reduce usando la regla 66 (sentencia_de_salto)
+
+
+estado 65
+
+    9 expAsignacion: ID . opAsignacion expOr
+   37 expPrimaria: ID .
+
+    ASIGNACION_INCREMENTO  desplazar e ir al estado 47
+    '='                    desplazar e ir al estado 49
+
+    $default  reduce usando la regla 37 (expPrimaria)
+
+    opAsignacion  ir al estado 50
+
+
+estado 66
+
+    7 expresion: expresion . ',' expAsignacion
+   68 sentencia_de_salto: RETURN expresion . ';'
+
+    ','  desplazar e ir al estado 75
+    ';'  desplazar e ir al estado 107
+
+
+estado 67
+
+   35 expUnaria: INCREMENTO expUnaria .
+
+    $default  reduce usando la regla 35 (expUnaria)
+
+
+estado 68
+
+   36 expUnaria: DECREMENTO expUnaria .
+
+    $default  reduce usando la regla 36 (expUnaria)
+
+
+estado 69
+
+    7 expresion: expresion . ',' expAsignacion
+   42 expPrimaria: '(' expresion . ')'
+
+    ')'  desplazar e ir al estado 108
+    ','  desplazar e ir al estado 75
+
+
+estado 70
+
+   53 sentencia_compuesta: '{' '}' .
+
+    $default  reduce usando la regla 53 (sentencia_compuesta)
+
+
+estado 71
+
+   50 sentencia: sentencia . ';' sentencia
+   70 lista_de_sentencias: sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 70 (lista_de_sentencias)]
+    $default  reduce usando la regla 70 (lista_de_sentencias)
+
+
+estado 72
+
+   55 sentencia_compuesta: '{' lista_de_sentencias . '}'
+   71 lista_de_sentencias: lista_de_sentencias . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+    '}'         desplazar e ir al estado 109
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 110
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 73
+
+   43 sentencia: declaracion .
+   83 lista_de_declaraciones: declaracion .
+
+    NUM_ENTERO  reduce usando la regla 43 (sentencia)
+    NUM_ENTERO  [reduce usando la regla 83 (lista_de_declaraciones)]
+    NUM_REAL    reduce usando la regla 43 (sentencia)
+    NUM_REAL    [reduce usando la regla 83 (lista_de_declaraciones)]
+    CHAR        reduce usando la regla 43 (sentencia)
+    CHAR        [reduce usando la regla 83 (lista_de_declaraciones)]
+    ID          reduce usando la regla 43 (sentencia)
+    ID          [reduce usando la regla 83 (lista_de_declaraciones)]
+    LIT_CADENA  reduce usando la regla 43 (sentencia)
+    LIT_CADENA  [reduce usando la regla 83 (lista_de_declaraciones)]
+    TIPO_DATO   reduce usando la regla 43 (sentencia)
+    TIPO_DATO   [reduce usando la regla 83 (lista_de_declaraciones)]
+    IF          reduce usando la regla 43 (sentencia)
+    IF          [reduce usando la regla 83 (lista_de_declaraciones)]
+    DEFAULT     reduce usando la regla 43 (sentencia)
+    DEFAULT     [reduce usando la regla 83 (lista_de_declaraciones)]
+    WHILE       reduce usando la regla 43 (sentencia)
+    WHILE       [reduce usando la regla 83 (lista_de_declaraciones)]
+    DO          reduce usando la regla 43 (sentencia)
+    DO          [reduce usando la regla 83 (lista_de_declaraciones)]
+    SWITCH      reduce usando la regla 43 (sentencia)
+    SWITCH      [reduce usando la regla 83 (lista_de_declaraciones)]
+    BREAK       reduce usando la regla 43 (sentencia)
+    BREAK       [reduce usando la regla 83 (lista_de_declaraciones)]
+    CASE        reduce usando la regla 43 (sentencia)
+    CASE        [reduce usando la regla 83 (lista_de_declaraciones)]
+    FOR         reduce usando la regla 43 (sentencia)
+    FOR         [reduce usando la regla 83 (lista_de_declaraciones)]
+    GOTO        reduce usando la regla 43 (sentencia)
+    GOTO        [reduce usando la regla 83 (lista_de_declaraciones)]
+    CONTINUE    reduce usando la regla 43 (sentencia)
+    CONTINUE    [reduce usando la regla 83 (lista_de_declaraciones)]
+    RETURN      reduce usando la regla 43 (sentencia)
+    RETURN      [reduce usando la regla 83 (lista_de_declaraciones)]
+    INCREMENTO  reduce usando la regla 43 (sentencia)
+    INCREMENTO  [reduce usando la regla 83 (lista_de_declaraciones)]
+    DECREMENTO  reduce usando la regla 43 (sentencia)
+    DECREMENTO  [reduce usando la regla 83 (lista_de_declaraciones)]
+    '('         reduce usando la regla 43 (sentencia)
+    '('         [reduce usando la regla 83 (lista_de_declaraciones)]
+    ';'         reduce usando la regla 43 (sentencia)
+    ';'         [reduce usando la regla 83 (lista_de_declaraciones)]
+    '{'         reduce usando la regla 43 (sentencia)
+    '{'         [reduce usando la regla 83 (lista_de_declaraciones)]
+    '}'         reduce usando la regla 43 (sentencia)
+    '}'         [reduce usando la regla 83 (lista_de_declaraciones)]
+    $default    reduce usando la regla 43 (sentencia)
+
+
+estado 74
+
+   54 sentencia_compuesta: '{' lista_de_declaraciones . '}'
+   56                    | '{' lista_de_declaraciones . lista_de_sentencias '}'
+   84 lista_de_declaraciones: lista_de_declaraciones . declaracion
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+    '}'         desplazar e ir al estado 111
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 71
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    lista_de_sentencias   ir al estado 112
+    declaracion           ir al estado 113
+
+
+estado 75
+
+    7 expresion: expresion ',' . expAsignacion
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 65
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expAsignacion      ir al estado 114
+    expCondicional     ir al estado 30
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 76
+
+   51 sentencia_expresion: expresion ';' .
+
+    $default  reduce usando la regla 51 (sentencia_expresion)
+
+
+estado 77
+
+   15 expOr: expOr OR . expAnd
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expAnd             ir al estado 115
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 78
+
+   11 expCondicional: expOr '?' . expresion ':' expCondicional
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 65
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expresion          ir al estado 116
+    expAsignacion      ir al estado 29
+    expCondicional     ir al estado 30
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 79
+
+   17 expAnd: expAnd AND . expIgualdad
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expIgualdad        ir al estado 117
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 80
+
+   19 expIgualdad: expIgualdad IGUALDAD . expRelacional
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expRelacional      ir al estado 118
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 81
+
+   20 expIgualdad: expIgualdad DISTINTO . expRelacional
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expRelacional      ir al estado 119
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 82
+
+   25 opRelacional: MAYOR_IGUAL .
+
+    $default  reduce usando la regla 25 (opRelacional)
+
+
+estado 83
+
+   26 opRelacional: MENOR_IGUAL .
+
+    $default  reduce usando la regla 26 (opRelacional)
+
+
+estado 84
+
+   23 opRelacional: '>' .
+
+    $default  reduce usando la regla 23 (opRelacional)
+
+
+estado 85
+
+   24 opRelacional: '<' .
+
+    $default  reduce usando la regla 24 (opRelacional)
+
+
+estado 86
+
+   22 expRelacional: expRelacional opRelacional . expAditiva
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expAditiva         ir al estado 120
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 87
+
+   28 expAditiva: expAditiva '+' . expMultiplicativa
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expMultiplicativa  ir al estado 121
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 88
+
+   29 expAditiva: expAditiva '-' . expMultiplicativa
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expMultiplicativa  ir al estado 122
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 89
+
+   32 expMultiplicativa: expMultiplicativa '*' . expUnaria
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 123
+    expPrimaria  ir al estado 38
+
+
+estado 90
+
+   31 expMultiplicativa: expMultiplicativa '/' . expUnaria
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 124
+    expPrimaria  ir al estado 38
+
+
+estado 91
+
+   33 expMultiplicativa: expMultiplicativa '%' . expUnaria
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 125
+    expPrimaria  ir al estado 38
+
+
+estado 92
+
+   50 sentencia: sentencia ';' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 126
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 93
+
+   50 sentencia: sentencia . ';' sentencia
+   65 sentencia_etiquetada: ID ':' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 65 (sentencia_etiquetada)]
+    $default  reduce usando la regla 65 (sentencia_etiquetada)
+
+
+estado 94
+
+    9 expAsignacion: ID opAsignacion expOr .
+   15 expOr: expOr . OR expAnd
+
+    OR  desplazar e ir al estado 77
+
+    $default  reduce usando la regla 9 (expAsignacion)
+
+
+estado 95
+
+   73 declaracion: TIPO_DATO ID '(' . listaParametros ')' ';'
+   74            | TIPO_DATO ID '(' . listaParametros ')' sentencia_compuesta
+
+    TIPO_DATO  desplazar e ir al estado 127
+
+    $default  reduce usando la regla 81 (parametro)
+
+    listaParametros  ir al estado 128
+    parametro        ir al estado 129
+
+
+estado 96
+
+   78 identificador: ID '=' . expAditiva
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expAditiva         ir al estado 130
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 97
+
+   72 declaracion: TIPO_DATO listaIdentificadores ';' .
+
+    $default  reduce usando la regla 72 (declaracion)
+
+
+estado 98
+
+   76 listaIdentificadores: identificador ',' . listaIdentificadores
+
+    ID  desplazar e ir al estado 131
+
+    listaIdentificadores  ir al estado 132
+    identificador         ir al estado 53
+
+
+estado 99
+
+   57 sentencia_seleccion: IF '(' expCondicional . ')' sentencia
+   58                    | IF '(' expCondicional . ')' sentencia ELSE sentencia
+
+    ')'  desplazar e ir al estado 133
+
+
+estado 100
+
+   50 sentencia: sentencia . ';' sentencia
+   64 sentencia_etiquetada: DEFAULT ':' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 64 (sentencia_etiquetada)]
+    $default  reduce usando la regla 64 (sentencia_etiquetada)
+
+
+estado 101
+
+   60 sentencia_iteracion: WHILE '(' expCondicional . ')' sentencia
+
+    ')'  desplazar e ir al estado 134
+
+
+estado 102
+
+   61 sentencia_iteracion: DO sentencia WHILE . '(' expCondicional ')' ';'
+
+    '('  desplazar e ir al estado 135
+
+
+estado 103
+
+   59 sentencia_seleccion: SWITCH '(' expCondicional . ')' sentencia
+
+    ')'  desplazar e ir al estado 136
+
+
+estado 104
+
+   63 sentencia_etiquetada: CASE expCondicional ':' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 137
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 105
+
+   62 sentencia_iteracion: FOR '(' declaracion . ';' expCondicional ';' expUnaria ')' sentencia
+
+    ';'  desplazar e ir al estado 138
+
+
+estado 106
+
+   69 sentencia_de_salto: GOTO ID ';' .
+
+    $default  reduce usando la regla 69 (sentencia_de_salto)
+
+
+estado 107
+
+   68 sentencia_de_salto: RETURN expresion ';' .
+
+    $default  reduce usando la regla 68 (sentencia_de_salto)
+
+
+estado 108
+
+   42 expPrimaria: '(' expresion ')' .
+
+    $default  reduce usando la regla 42 (expPrimaria)
+
+
+estado 109
+
+   55 sentencia_compuesta: '{' lista_de_sentencias '}' .
+
+    $default  reduce usando la regla 55 (sentencia_compuesta)
+
+
+estado 110
+
+   50 sentencia: sentencia . ';' sentencia
+   71 lista_de_sentencias: lista_de_sentencias sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 71 (lista_de_sentencias)]
+    $default  reduce usando la regla 71 (lista_de_sentencias)
+
+
+estado 111
+
+   54 sentencia_compuesta: '{' lista_de_declaraciones '}' .
+
+    $default  reduce usando la regla 54 (sentencia_compuesta)
+
+
+estado 112
+
+   56 sentencia_compuesta: '{' lista_de_declaraciones lista_de_sentencias . '}'
+   71 lista_de_sentencias: lista_de_sentencias . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+    '}'         desplazar e ir al estado 139
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 110
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 113
+
+   43 sentencia: declaracion .
+   84 lista_de_declaraciones: lista_de_declaraciones declaracion .
+
+    NUM_ENTERO  reduce usando la regla 43 (sentencia)
+    NUM_ENTERO  [reduce usando la regla 84 (lista_de_declaraciones)]
+    NUM_REAL    reduce usando la regla 43 (sentencia)
+    NUM_REAL    [reduce usando la regla 84 (lista_de_declaraciones)]
+    CHAR        reduce usando la regla 43 (sentencia)
+    CHAR        [reduce usando la regla 84 (lista_de_declaraciones)]
+    ID          reduce usando la regla 43 (sentencia)
+    ID          [reduce usando la regla 84 (lista_de_declaraciones)]
+    LIT_CADENA  reduce usando la regla 43 (sentencia)
+    LIT_CADENA  [reduce usando la regla 84 (lista_de_declaraciones)]
+    TIPO_DATO   reduce usando la regla 43 (sentencia)
+    TIPO_DATO   [reduce usando la regla 84 (lista_de_declaraciones)]
+    IF          reduce usando la regla 43 (sentencia)
+    IF          [reduce usando la regla 84 (lista_de_declaraciones)]
+    DEFAULT     reduce usando la regla 43 (sentencia)
+    DEFAULT     [reduce usando la regla 84 (lista_de_declaraciones)]
+    WHILE       reduce usando la regla 43 (sentencia)
+    WHILE       [reduce usando la regla 84 (lista_de_declaraciones)]
+    DO          reduce usando la regla 43 (sentencia)
+    DO          [reduce usando la regla 84 (lista_de_declaraciones)]
+    SWITCH      reduce usando la regla 43 (sentencia)
+    SWITCH      [reduce usando la regla 84 (lista_de_declaraciones)]
+    BREAK       reduce usando la regla 43 (sentencia)
+    BREAK       [reduce usando la regla 84 (lista_de_declaraciones)]
+    CASE        reduce usando la regla 43 (sentencia)
+    CASE        [reduce usando la regla 84 (lista_de_declaraciones)]
+    FOR         reduce usando la regla 43 (sentencia)
+    FOR         [reduce usando la regla 84 (lista_de_declaraciones)]
+    GOTO        reduce usando la regla 43 (sentencia)
+    GOTO        [reduce usando la regla 84 (lista_de_declaraciones)]
+    CONTINUE    reduce usando la regla 43 (sentencia)
+    CONTINUE    [reduce usando la regla 84 (lista_de_declaraciones)]
+    RETURN      reduce usando la regla 43 (sentencia)
+    RETURN      [reduce usando la regla 84 (lista_de_declaraciones)]
+    INCREMENTO  reduce usando la regla 43 (sentencia)
+    INCREMENTO  [reduce usando la regla 84 (lista_de_declaraciones)]
+    DECREMENTO  reduce usando la regla 43 (sentencia)
+    DECREMENTO  [reduce usando la regla 84 (lista_de_declaraciones)]
+    '('         reduce usando la regla 43 (sentencia)
+    '('         [reduce usando la regla 84 (lista_de_declaraciones)]
+    ';'         reduce usando la regla 43 (sentencia)
+    ';'         [reduce usando la regla 84 (lista_de_declaraciones)]
+    '{'         reduce usando la regla 43 (sentencia)
+    '{'         [reduce usando la regla 84 (lista_de_declaraciones)]
+    '}'         reduce usando la regla 43 (sentencia)
+    '}'         [reduce usando la regla 84 (lista_de_declaraciones)]
+    $default    reduce usando la regla 43 (sentencia)
+
+
+estado 114
+
+    7 expresion: expresion ',' expAsignacion .
+
+    $default  reduce usando la regla 7 (expresion)
+
+
+estado 115
+
+   15 expOr: expOr OR expAnd .
+   17 expAnd: expAnd . AND expIgualdad
+
+    AND  desplazar e ir al estado 79
+
+    $default  reduce usando la regla 15 (expOr)
+
+
+estado 116
+
+    7 expresion: expresion . ',' expAsignacion
+   11 expCondicional: expOr '?' expresion . ':' expCondicional
+
+    ','  desplazar e ir al estado 75
+    ':'  desplazar e ir al estado 140
+
+
+estado 117
+
+   17 expAnd: expAnd AND expIgualdad .
+   19 expIgualdad: expIgualdad . IGUALDAD expRelacional
+   20            | expIgualdad . DISTINTO expRelacional
+
+    IGUALDAD  desplazar e ir al estado 80
+    DISTINTO  desplazar e ir al estado 81
+
+    $default  reduce usando la regla 17 (expAnd)
+
+
+estado 118
+
+   19 expIgualdad: expIgualdad IGUALDAD expRelacional .
+   22 expRelacional: expRelacional . opRelacional expAditiva
+
+    MAYOR_IGUAL  desplazar e ir al estado 82
+    MENOR_IGUAL  desplazar e ir al estado 83
+    '>'          desplazar e ir al estado 84
+    '<'          desplazar e ir al estado 85
+
+    $default  reduce usando la regla 19 (expIgualdad)
+
+    opRelacional  ir al estado 86
+
+
+estado 119
+
+   20 expIgualdad: expIgualdad DISTINTO expRelacional .
+   22 expRelacional: expRelacional . opRelacional expAditiva
+
+    MAYOR_IGUAL  desplazar e ir al estado 82
+    MENOR_IGUAL  desplazar e ir al estado 83
+    '>'          desplazar e ir al estado 84
+    '<'          desplazar e ir al estado 85
+
+    $default  reduce usando la regla 20 (expIgualdad)
+
+    opRelacional  ir al estado 86
+
+
+estado 120
+
+   22 expRelacional: expRelacional opRelacional expAditiva .
+   28 expAditiva: expAditiva . '+' expMultiplicativa
+   29           | expAditiva . '-' expMultiplicativa
+
+    '+'  desplazar e ir al estado 87
+    '-'  desplazar e ir al estado 88
+
+    $default  reduce usando la regla 22 (expRelacional)
+
+
+estado 121
+
+   28 expAditiva: expAditiva '+' expMultiplicativa .
+   31 expMultiplicativa: expMultiplicativa . '/' expUnaria
+   32                  | expMultiplicativa . '*' expUnaria
+   33                  | expMultiplicativa . '%' expUnaria
+
+    '*'  desplazar e ir al estado 89
+    '/'  desplazar e ir al estado 90
+    '%'  desplazar e ir al estado 91
+
+    $default  reduce usando la regla 28 (expAditiva)
+
+
+estado 122
+
+   29 expAditiva: expAditiva '-' expMultiplicativa .
+   31 expMultiplicativa: expMultiplicativa . '/' expUnaria
+   32                  | expMultiplicativa . '*' expUnaria
+   33                  | expMultiplicativa . '%' expUnaria
+
+    '*'  desplazar e ir al estado 89
+    '/'  desplazar e ir al estado 90
+    '%'  desplazar e ir al estado 91
+
+    $default  reduce usando la regla 29 (expAditiva)
+
+
+estado 123
+
+   32 expMultiplicativa: expMultiplicativa '*' expUnaria .
+
+    $default  reduce usando la regla 32 (expMultiplicativa)
+
+
+estado 124
+
+   31 expMultiplicativa: expMultiplicativa '/' expUnaria .
+
+    $default  reduce usando la regla 31 (expMultiplicativa)
+
+
+estado 125
+
+   33 expMultiplicativa: expMultiplicativa '%' expUnaria .
+
+    $default  reduce usando la regla 33 (expMultiplicativa)
+
+
+estado 126
+
+   50 sentencia: sentencia . ';' sentencia
+   50          | sentencia ';' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 50 (sentencia)]
+    $default  reduce usando la regla 50 (sentencia)
+
+
+estado 127
+
+   82 parametro: TIPO_DATO . ID
+
+    ID  desplazar e ir al estado 141
+
+
+estado 128
+
+   73 declaracion: TIPO_DATO ID '(' listaParametros . ')' ';'
+   74            | TIPO_DATO ID '(' listaParametros . ')' sentencia_compuesta
+
+    ')'  desplazar e ir al estado 142
+
+
+estado 129
+
+   79 listaParametros: parametro .
+   80                | parametro . ',' listaParametros
+
+    ','  desplazar e ir al estado 143
+
+    $default  reduce usando la regla 79 (listaParametros)
+
+
+estado 130
+
+   28 expAditiva: expAditiva . '+' expMultiplicativa
+   29           | expAditiva . '-' expMultiplicativa
+   78 identificador: ID '=' expAditiva .
+
+    '+'  desplazar e ir al estado 87
+    '-'  desplazar e ir al estado 88
+
+    $default  reduce usando la regla 78 (identificador)
+
+
+estado 131
+
+   77 identificador: ID .
+   78              | ID . '=' expAditiva
+
+    '='  desplazar e ir al estado 96
+
+    $default  reduce usando la regla 77 (identificador)
+
+
+estado 132
+
+   76 listaIdentificadores: identificador ',' listaIdentificadores .
+
+    $default  reduce usando la regla 76 (listaIdentificadores)
+
+
+estado 133
+
+   57 sentencia_seleccion: IF '(' expCondicional ')' . sentencia
+   58                    | IF '(' expCondicional ')' . sentencia ELSE sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 144
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 134
+
+   60 sentencia_iteracion: WHILE '(' expCondicional ')' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 145
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 135
+
+   61 sentencia_iteracion: DO sentencia WHILE '(' . expCondicional ')' ';'
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 146
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 136
+
+   59 sentencia_seleccion: SWITCH '(' expCondicional ')' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 147
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 137
+
+   50 sentencia: sentencia . ';' sentencia
+   63 sentencia_etiquetada: CASE expCondicional ':' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 63 (sentencia_etiquetada)]
+    $default  reduce usando la regla 63 (sentencia_etiquetada)
+
+
+estado 138
+
+   62 sentencia_iteracion: FOR '(' declaracion ';' . expCondicional ';' expUnaria ')' sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 148
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 139
+
+   56 sentencia_compuesta: '{' lista_de_declaraciones lista_de_sentencias '}' .
+
+    $default  reduce usando la regla 56 (sentencia_compuesta)
+
+
+estado 140
+
+   11 expCondicional: expOr '?' expresion ':' . expCondicional
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expCondicional     ir al estado 149
+    expOr              ir al estado 31
+    expAnd             ir al estado 32
+    expIgualdad        ir al estado 33
+    expRelacional      ir al estado 34
+    expAditiva         ir al estado 35
+    expMultiplicativa  ir al estado 36
+    expUnaria          ir al estado 37
+    expPrimaria        ir al estado 38
+
+
+estado 141
+
+   82 parametro: TIPO_DATO ID .
+
+    $default  reduce usando la regla 82 (parametro)
+
+
+estado 142
+
+   73 declaracion: TIPO_DATO ID '(' listaParametros ')' . ';'
+   74            | TIPO_DATO ID '(' listaParametros ')' . sentencia_compuesta
+
+    ';'  desplazar e ir al estado 150
+    '{'  desplazar e ir al estado 26
+
+    sentencia_compuesta  ir al estado 151
+
+
+estado 143
+
+   80 listaParametros: parametro ',' . listaParametros
+
+    TIPO_DATO  desplazar e ir al estado 127
+
+    $default  reduce usando la regla 81 (parametro)
+
+    listaParametros  ir al estado 152
+    parametro        ir al estado 129
+
+
+estado 144
+
+   50 sentencia: sentencia . ';' sentencia
+   57 sentencia_seleccion: IF '(' expCondicional ')' sentencia .
+   58                    | IF '(' expCondicional ')' sentencia . ELSE sentencia
+
+    ELSE  desplazar e ir al estado 153
+    ';'   desplazar e ir al estado 92
+
+    ELSE      [reduce usando la regla 57 (sentencia_seleccion)]
+    ';'       [reduce usando la regla 57 (sentencia_seleccion)]
+    $default  reduce usando la regla 57 (sentencia_seleccion)
+
+
+estado 145
+
+   50 sentencia: sentencia . ';' sentencia
+   60 sentencia_iteracion: WHILE '(' expCondicional ')' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 60 (sentencia_iteracion)]
+    $default  reduce usando la regla 60 (sentencia_iteracion)
+
+
+estado 146
+
+   61 sentencia_iteracion: DO sentencia WHILE '(' expCondicional . ')' ';'
+
+    ')'  desplazar e ir al estado 154
+
+
+estado 147
+
+   50 sentencia: sentencia . ';' sentencia
+   59 sentencia_seleccion: SWITCH '(' expCondicional ')' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 59 (sentencia_seleccion)]
+    $default  reduce usando la regla 59 (sentencia_seleccion)
+
+
+estado 148
+
+   62 sentencia_iteracion: FOR '(' declaracion ';' expCondicional . ';' expUnaria ')' sentencia
+
+    ';'  desplazar e ir al estado 155
+
+
+estado 149
+
+   11 expCondicional: expOr '?' expresion ':' expCondicional .
+
+    $default  reduce usando la regla 11 (expCondicional)
+
+
+estado 150
+
+   73 declaracion: TIPO_DATO ID '(' listaParametros ')' ';' .
+
+    $default  reduce usando la regla 73 (declaracion)
+
+
+estado 151
+
+   74 declaracion: TIPO_DATO ID '(' listaParametros ')' sentencia_compuesta .
+
+    $default  reduce usando la regla 74 (declaracion)
+
+
+estado 152
+
+   80 listaParametros: parametro ',' listaParametros .
+
+    $default  reduce usando la regla 80 (listaParametros)
+
+
+estado 153
+
+   58 sentencia_seleccion: IF '(' expCondicional ')' sentencia ELSE . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 156
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 154
+
+   61 sentencia_iteracion: DO sentencia WHILE '(' expCondicional ')' . ';'
+
+    ';'  desplazar e ir al estado 157
+
+
+estado 155
+
+   62 sentencia_iteracion: FOR '(' declaracion ';' expCondicional ';' . expUnaria ')' sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 60
+    LIT_CADENA  desplazar e ir al estado 9
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+
+    expUnaria    ir al estado 158
+    expPrimaria  ir al estado 38
+
+
+estado 156
+
+   50 sentencia: sentencia . ';' sentencia
+   58 sentencia_seleccion: IF '(' expCondicional ')' sentencia ELSE sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 58 (sentencia_seleccion)]
+    $default  reduce usando la regla 58 (sentencia_seleccion)
+
+
+estado 157
+
+   61 sentencia_iteracion: DO sentencia WHILE '(' expCondicional ')' ';' .
+
+    $default  reduce usando la regla 61 (sentencia_iteracion)
+
+
+estado 158
+
+   62 sentencia_iteracion: FOR '(' declaracion ';' expCondicional ';' expUnaria . ')' sentencia
+
+    ')'  desplazar e ir al estado 159
+
+
+estado 159
+
+   62 sentencia_iteracion: FOR '(' declaracion ';' expCondicional ';' expUnaria ')' . sentencia
+
+    NUM_ENTERO  desplazar e ir al estado 4
+    NUM_REAL    desplazar e ir al estado 5
+    CHAR        desplazar e ir al estado 6
+    ID          desplazar e ir al estado 8
+    LIT_CADENA  desplazar e ir al estado 9
+    TIPO_DATO   desplazar e ir al estado 10
+    IF          desplazar e ir al estado 11
+    DEFAULT     desplazar e ir al estado 12
+    WHILE       desplazar e ir al estado 13
+    DO          desplazar e ir al estado 14
+    SWITCH      desplazar e ir al estado 15
+    BREAK       desplazar e ir al estado 16
+    CASE        desplazar e ir al estado 17
+    FOR         desplazar e ir al estado 18
+    GOTO        desplazar e ir al estado 19
+    CONTINUE    desplazar e ir al estado 20
+    RETURN      desplazar e ir al estado 21
+    INCREMENTO  desplazar e ir al estado 22
+    DECREMENTO  desplazar e ir al estado 23
+    '('         desplazar e ir al estado 24
+    ';'         desplazar e ir al estado 25
+    '{'         desplazar e ir al estado 26
+
+    expresion             ir al estado 28
+    expAsignacion         ir al estado 29
+    expCondicional        ir al estado 30
+    expOr                 ir al estado 31
+    expAnd                ir al estado 32
+    expIgualdad           ir al estado 33
+    expRelacional         ir al estado 34
+    expAditiva            ir al estado 35
+    expMultiplicativa     ir al estado 36
+    expUnaria             ir al estado 37
+    expPrimaria           ir al estado 38
+    sentencia             ir al estado 160
+    sentencia_expresion   ir al estado 40
+    sentencia_compuesta   ir al estado 41
+    sentencia_seleccion   ir al estado 42
+    sentencia_iteracion   ir al estado 43
+    sentencia_etiquetada  ir al estado 44
+    sentencia_de_salto    ir al estado 45
+    declaracion           ir al estado 46
+
+
+estado 160
+
+   50 sentencia: sentencia . ';' sentencia
+   62 sentencia_iteracion: FOR '(' declaracion ';' expCondicional ';' expUnaria ')' sentencia .
+
+    ';'  desplazar e ir al estado 92
+
+    ';'       [reduce usando la regla 62 (sentencia_iteracion)]
+    $default  reduce usando la regla 62 (sentencia_iteracion)
